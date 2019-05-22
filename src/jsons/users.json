@@ -1,0 +1,31 @@
+[{
+    "id": 1,
+    "name": "Jesse",
+    "surname": "Jest",
+    "email": "jjest0@yahoo.com",
+    "gender": "Female"
+  }, {
+    "id": 2,
+    "name": "Rosalie",
+    "surname": "Hamberston",
+    "email": "rhamberston1@umn.edu",
+    "gender": "Female"
+  }, {
+    "id": 3,
+    "name": "Donny",
+    "surname": "Forrester",
+    "email": "dforrester2@ucoz.com",
+    "gender": "Male"
+  }, {
+    "id": 4,
+    "name": "Victoir",
+    "surname": "Pettingall",
+    "email": "vpettingall3@de.vu",
+    "gender": "Male"
+  }, {
+    "id": 5,
+    "name": "Ollie",
+    "surname": "Delouch",
+    "email": "odelouch4@loc.gov",
+    "gender": "Male"
+  }]
