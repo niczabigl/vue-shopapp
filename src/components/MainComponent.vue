@@ -1,7 +1,7 @@
 <template>
   <div @click="hideSideBar" class="main w3-container">
     <div >
-      <ViewComponent @showNotificationEvent="showNotification" @showModalEvent="showModal">
+      <ViewComponent @toggleToolTipModalEvent="toggleToolTipModal" @showToolTipModalEvent="showToolTipModal" @showNotificationEvent="showNotification" @showModalEvent="showModal">
       </ViewComponent>
     </div>
   </div>
@@ -23,6 +23,12 @@ export default {
     },
     showNotification: function (data) {
       this.$emit('showNotificationEvent',data)
+    },
+    showToolTipModal: function (data) {
+      this.$emit('showToolTipModalEvent',data)
+    },
+    toggleToolTipModal: function () {
+      this.$emit('toggleToolTipModalEvent')
     }
   }
 }

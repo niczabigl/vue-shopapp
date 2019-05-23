@@ -32,13 +32,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label>behaviour:</label>{{data.item.behaviour}}
-                                </td>
-                                <td>
                                     <label>size:</label>{{data.item.size}}
                                 </td>
                                 <td>
                                     <label>price:</label>{{data.item.price}}
+                                </td>
+                                <td>
+                                    <label></label>
                                 </td>
                             </tr>
                         </tbody>
@@ -71,11 +71,9 @@ export default {
     },
     watch: {
         show: function () {
-            console.log('watch show', this.checkDisplay())
             this.showClass = this.checkDisplay()
         },
         showModal: function (newValue) {
-            console.log('watch showModal', newValue)
             this.show = newValue
         },
         data: function () {

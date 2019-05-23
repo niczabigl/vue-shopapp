@@ -1,9 +1,10 @@
 <template>
     <div class="chartquick">
       <router-link class="w3-button" to="/chart">
-        <img id="chart" src="../assets/charticon.png">
-        <span @click="hideSideBar">Chart </span>
-        <span class="itemsCount">({{itemsCount}})</span>
+        <div>
+            <img id="chart" src="../assets/charticon.png">
+            <span class="itemsCount w3-badge w3-tiny">{{itemsCount}}</span>
+        </div>
     </router-link> 
     </div>
 </template>
@@ -26,7 +27,10 @@ export default {
   computed: {
     itemsCount: function () {
         return this.$store.getters.getCharListCount
-    } 
+    },
+    itemsPrices: function () {
+        return this.$store.getters.getTotalAmountCharList
+    }
   }
 }
 </script>
@@ -34,7 +38,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .itemsCount {
-
+    position: relative;
+    bottom: 10px;
+    right: 10px
 }
 #chart {
 

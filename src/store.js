@@ -108,6 +108,16 @@ export default new Vuex.Store({
     },
     getCharListItems: state => {
       return state.shoppingcart.items
+    },
+    getTotalAmountCharList: (state, getters) => {
+      let list = getters.getCharListItems
+      let totalAmount = 0
+      list.forEach(function (item) {
+        item.price = item.price.replace('€', '')
+        totalAmount += parseFloat(item.price)
+        item.price = item.price + '€'
+      })
+      return totalAmount + '€'
     }
   }
 })

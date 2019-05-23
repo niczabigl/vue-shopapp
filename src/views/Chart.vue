@@ -7,31 +7,37 @@
         </div>
         <div v-else>
             <h3>Cart list</h3>
-            <div @click="itemDetail(item)" class="w3-container w3-padding" v-for="item in itemsChart" :key="item.id">
-                <div class="w3-col w3-right s9 w3-card">
-                    <div class="w3-col s3">
-                        <img :src="item.image">
-                    </div>
-                    <div class="w3-col s7 w3-teal">
-                        <h4>{{item.common_name}}</h4>
-                        <p>{{item.race}}</p>
-                    </div>
-                    <div class="w3-col s2 w3-green">
-                        <div class="w3-display-container">
-                            <div>{{item.price}}</div>
-                            <button class="w3-button w3-red w3-display-topright" @click="removeFromCart($event, item.id)">&times;</button>
+            <div class="w3-row chart">
+                <div @click="itemDetail(item)" class="w3-container w3-padding" v-for="item in itemsChart" :key="item.id">
+                    <div class="w3-right w3-card w3-col w3-threequarter">
+                        <div class="w3-quarter">
+                            <img class="chartImage" :src="item.image">
+                        </div>
+                        <div @mouseleave="stophandler" @mousemove="handler($event, item)" class="info w3-half">
+                            <p><span>{{item.common_name}}</span> - <span>{{item.race}}</span></p>
+                            <ul class="features">
+                                <li><img class="icon" src="../assets/behaviourIcon.png">{{item.behaviour}}</li>
+                                <li><img class="icon" src="../assets/genderIcon.png">{{item.gender}}</li>
+                                <li><img class="icon" src="../assets/sizeIcon.png">{{item.size}}</li>
+                            </ul>
+                        </div>
+                        <div class="w3-quarter">
+                            <div class="w3-display-container priceContainer">
+                                <div class="price w3-green w3-display-middle">{{item.price}}</div>
+                                <div class="w3-button w3-red w3-display-topright" @click="removeFromCart($event, item.id)">&times;</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="w3-container w3-left w3-padding">
+            <div class="w3-container w3-right w3-padding">
                 <br class="clear">
                 <hr>
-                <table class="w3-table-all w3-small" v-if="itemsChart.length > 0">
+                <table class="w3-table-all w3-big" v-if="itemsChart.length > 0">
                 <thead>
                     <tr>
-                        <th>Items:</th>
-                        <th>Amount:</th>
+                        <th>Items</th>
+                        <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +49,10 @@
                 </table>
             </div>
         </div>
+        <!-- <div>
+            <div @mouseleave="stophandler" @mousemove="handler($event)" class="w3-display-middle" id="test"></div>
+            <p class="w3-display-bottom w3-margin" id="result"> {{result}} </p>
+        </div> -->
     </div>
 </template>
 
@@ -56,6 +66,7 @@ export default {
     },
     data: function () {
         return {
+            result: Object,
             itemsChart: this.$store.getters.getCharListItems,
         }
     },
@@ -79,30 +90,67 @@ export default {
         removeFromCart: function (event, id) {
             event.stopPropagation()
             this.$store.dispatch('removeFromChart', id).then((response) => {
-                this.$emit('showNotificationEvent', {style: 'success', title: 'removeFromChart', msg: 'Item was removed from chart'})
+                this.$emit('showNotificationEvent', {style: 'success', title: 'INFO', msg: 'Item was removed from chart'})
             })
             .catch(e => {
-                this.$emit('showNotificationEvent', {style: 'fail', title: 'removeFromChart', msg: 'error occured after remove item from chart'})
+                this.$emit('showNotificationEvent', {style: 'fail', title: 'ERROR', msg: 'error occured after remove item from chart'})
             });
+        },
+        handler: function (event, i) {
+            console.log('item', i)
+            this.$emit('showToolTipModalEvent', {
+                top: event.clientY, 
+                left: event.clientX + 25,
+                title: i.common_name,
+                main: i.description,
+                item: i
+            })
+        },
+        stophandler: function () {
+            this.$emit('toggleToolTipModalEvent')
         }
     },
     computed: {
         totalAmount: function () { 
-            let totalAmount = 0
-            this.itemsChart.forEach(function (item) {
-                item.price = item.price.slice(1,item.price.length)
-                console.log('item.price', item.price)
-                totalAmount += parseFloat(item.price)
-                item.price = item.price + '€'
-            })
-            return totalAmount + '€'
+            return this.$store.getters.getTotalAmountCharList
         }
     }
 }
 </script>
 
 <style>
+#test {
+    height: 150px;
+    width: 150px;
+    background-color: aquamarine
+}
 .clear {
     clear:both;
+}
+.chartImage{
+    height: 125px;
+    width:100%;
+}
+.chart .price{
+    height: 100%;
+    width: 100%;
+    padding: 50px;
+    font-size: 25px
+}
+.chart .info{
+    font-style: bold;
+    font-size: 20px;
+    text-align: left;
+    padding-left: 20px;
+}
+.priceContainer{
+    height: 125px;
+}
+.features {
+    margin: 0px;
+}
+.features li{
+    list-style: none;
+    display: inline-block;
 }
 </style>

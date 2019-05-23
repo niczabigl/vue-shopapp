@@ -1,10 +1,10 @@
 <template>
     <div @click="itemDetail(animal)" class="w3-card">
-      <img :src="animal.image" :alt="animal.scientist_name">
+      <img class="mainImage" :src="animal.image" :alt="animal.scientist_name">
       <h4 class="w3-green">{{animal.common_name}}</h4>
       <p class="price">{{animal.price}}</p>
       <p>{{animal.race}}</p>
-      <p><button @click="addToChart">Add to Chart</button></p>
+      <p><button @click="addToChart($event)">Add to Chart</button></p>
     </div>
 </template>
 
@@ -15,7 +15,8 @@ export default {
     animal: Object,
   },
   methods: {
-    addToChart: function () {
+    addToChart: function (e) {
+      e.stopPropagation()
       this.$store.dispatch('addToChart', this.animal).then((response) => {
         this.$emit('showNotificationEvent', {type: 'success', title: 'INFO', msg: this.animal.common_name + ' added to chart'})
       })
@@ -54,9 +55,6 @@ li {
 a {
   color: #42b983;
 }
-img {
-  width: 100%;
-}
 
 .price {
   color: grey;
@@ -73,6 +71,13 @@ button {
   cursor: pointer;
   width: 100%;
   font-size: 18px;
+}
+
+.mainImage{
+  height: 200px;
+  width: 100%;
+  max-height: 200px;
+  
 }
 
 .card button:hover {

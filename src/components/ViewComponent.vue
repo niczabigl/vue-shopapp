@@ -1,6 +1,6 @@
 <template>
     <div class="view">
-      <router-view @showNotificationEvent="showNotification" @showModalEvent="showModal"/>
+      <router-view @toggleToolTipModalEvent="toggleToolTipModal" @showToolTipModalEvent="showToolTipModal" @showNotificationEvent="showNotification" @showModalEvent="showModal"/>
     </div>
 </template>
 
@@ -16,6 +16,12 @@ export default {
         },
         showNotification: function (data) {
             this.$emit('showNotificationEvent', data)
+        },
+        showToolTipModal: function (data) {
+            this.$emit('showToolTipModalEvent', data)
+        },
+        toggleToolTipModal: function (data) {
+            this.$emit('toggleToolTipModalEvent')
         }
   }
 }

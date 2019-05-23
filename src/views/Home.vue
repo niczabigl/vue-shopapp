@@ -1,8 +1,8 @@
 <template>
   <div class="home w3-container">
     <h1>Welcome to Animals Crossing Website</h1>
-    <div class="w3-third w3-padding" v-for="animal in animals" :key="animal.id">
-      <AnimalComponent @showNotificationEvent="showNotification" v-bind:animal="animal"></AnimalComponent>
+    <div class="w3-quarter w3-padding" v-for="animal in animals" :key="animal.id">
+      <AnimalComponent @showModalEvent="showModal" @showNotificationEvent="showNotification" v-bind:animal="animal"></AnimalComponent>
     </div>    
   </div>
 </template>
@@ -11,6 +11,7 @@
 // @ is an alias to /src
 import MainSideComponent from '@/components/MainSideComponent.vue'
 import AnimalComponent from '@/components/AnimalComponent.vue'
+import {makeGetRequest} from '../Utils'
 
 export default {
   name: 'home',
@@ -24,25 +25,45 @@ export default {
     }
   },
   created: function() {
-    this.animals = this.loadData(20)
+    this.loadData(20).then(response => { 
+      this.animals = response
+    })
   },
   components: {
     AnimalComponent
   },
   methods: {
     loadData(number) {
-      let data = []
-      for(let i = 0 ; i < number ; i++){
-        let a = this.fetchOne()
-        if(!data.includes(a)) data.push(a)
-      }
-      return data
+      return new Promise ((resolve) =>{
+        let data = []
+        let responses = []
+        for(let i = 0 ; i < number ; i++){
+          let a = this.fetchOne()
+          if(!data.includes(a)) data.push(a)
+        }
+        resolve(data) 
+        // for(let i = 0 ; i < number ; i++){
+        //    responses.push(makeGetRequest())
+        // }
+        // Promise.all(responses)
+        //   .then(response => {
+        //     for(let i = 0 ; i < number ; i++){
+        //       let a = this.fetchOne()
+        //       if (response[i].status === 200 && response[i].data.status === "success") a.image = response[i].data.message
+        //       if(!data.includes(a)) data.push(a)
+        //     }
+        //     resolve(data)
+        // })
+      })
     },
     fetchOne() {
       return this.$store.getters.findAnimal(Math.floor(Math.random() * 20) + 1)
     },
     showNotification(data) {
       this.$emit('showNotificationEvent', data)
+    },
+    showModal(data) {
+      this.$emit('showModalEvent', data)
     }
   }
 }
