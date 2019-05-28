@@ -8,8 +8,8 @@
         <div v-else>
             <h3>Cart list</h3>
             <div class="w3-row chart">
-                <div @click="itemDetail(item)" class="w3-container w3-padding" v-for="item in itemsChart" :key="item.id">
-                    <div class="w3-right w3-card w3-col w3-threequarter">
+                <div class="w3-container w3-padding" v-for="item in itemsChart" :key="item.id">
+                    <div @click="itemDetail(item)" class="w3-right w3-card w3-sand w3-col w3-threequarter">
                         <div class="w3-quarter">
                             <img class="chartImage" :src="item.image">
                         </div>
@@ -23,8 +23,8 @@
                         </div>
                         <div class="w3-quarter">
                             <div class="w3-display-container priceContainer">
-                                <div class="price w3-green w3-display-middle">{{item.price}}</div>
-                                <div class="w3-button w3-red w3-display-topright" @click="removeFromCart($event, item.id)">&times;</div>
+                                <div class="price w3-display-middle">{{item.price}}</div>
+                                <div class="w3-button nail w3-display-topright" @click="removeFromCart($event, item.id)">&times;</div>
                             </div>
                         </div>
                     </div>
@@ -97,10 +97,13 @@ export default {
             });
         },
         handler: function (event, i) {
-            console.log('item', i)
+            let halfWindow = event.view.screen.availHeight / 2
+            let halfBottomWindow = event.view.screen.availHeight - halfWindow
+            let valueTop = event.y
+            if (valueTop > halfBottomWindow) valueTop = valueTop - 350
             this.$emit('showToolTipModalEvent', {
-                top: event.clientY, 
-                left: event.clientX + 25,
+                top: valueTop, 
+                left: event.x + 25,
                 title: i.common_name,
                 main: i.description,
                 item: i
@@ -119,6 +122,26 @@ export default {
 </script>
 
 <style>
+.nail {
+    border-radius : 50px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url('../assets/removeButton.png');
+    -webkit-transition: -webkit-transform .8s ease-in-out;
+          transition:         transform .8s ease-in-out;
+}
+.nail:hover {
+    border-radius : 50px;
+    box-shadow: 0px 0px 7px 4px rgba(0,0,0,1);
+    -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+}
+.chart .w3-container .w3-card{
+    border-radius : 10px;
+    box-shadow: -1rem 1rem 1rem #000;
+    background-image: url('../assets/card-paper.jpg')
+}
 #test {
     height: 150px;
     width: 150px;
@@ -152,5 +175,7 @@ export default {
 .features li{
     list-style: none;
     display: inline-block;
+    font-size: small;
+    padding: 0 10 0 0
 }
 </style>

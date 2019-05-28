@@ -1,12 +1,12 @@
 <template>
-    <div class="chartquick">
-      <router-link class="w3-button" to="/chart">
-        <div>
-            <img id="chart" src="../assets/charticon.png">
-            <span class="itemsCount w3-badge w3-tiny">{{itemsCount}}</span>
-        </div>
+    <span class="chartquick">
+      <router-link to="/chart">
+        <span class="w3-container">
+            <img id="chart" src="../assets/wooden-shopping-cart-icon.png">
+            <span class="itemsCount w3-yellow w3-badge">{{itemsCount}}</span>
+        </span>
     </router-link> 
-    </div>
+    </span>
 </template>
 
 <script>
@@ -39,8 +39,8 @@ export default {
 <style scoped>
 .itemsCount {
     position: relative;
-    bottom: 10px;
-    right: 10px
+    bottom: 25px;
+    right: 20px
 }
 #chart {
 

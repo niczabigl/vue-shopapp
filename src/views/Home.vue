@@ -2,7 +2,7 @@
   <div class="home w3-container">
     <h1>Welcome to Animals Crossing Website</h1>
     <div class="w3-quarter w3-padding" v-for="animal in animals" :key="animal.id">
-      <AnimalComponent @showModalEvent="showModal" @showNotificationEvent="showNotification" v-bind:animal="animal"></AnimalComponent>
+      <AnimalComponent @showModalEvent="showModal" @showNotificationEvent="showNotification" v-bind:animal="animal" :key="animal.selected"></AnimalComponent>
     </div>    
   </div>
 </template>
@@ -26,6 +26,7 @@ export default {
   },
   created: function() {
     this.loadData(20).then(response => { 
+      console.log('loaddata response',response)
       this.animals = response
     })
   },
@@ -35,25 +36,28 @@ export default {
   methods: {
     loadData(number) {
       return new Promise ((resolve) =>{
+        if (this.$store.getters.getAllPreloadAnimals.length > 0) return resolve(this.$store.getters.getAllPreloadAnimals)
         let data = []
         let responses = []
-        for(let i = 0 ; i < number ; i++){
-          let a = this.fetchOne()
-          if(!data.includes(a)) data.push(a)
-        }
-        resolve(data) 
         // for(let i = 0 ; i < number ; i++){
-        //    responses.push(makeGetRequest())
+        //   let a = this.fetchOne()
+        //   a.selected = false
+        //   if(!data.includes(a)) data.push(a)
         // }
-        // Promise.all(responses)
-        //   .then(response => {
-        //     for(let i = 0 ; i < number ; i++){
-        //       let a = this.fetchOne()
-        //       if (response[i].status === 200 && response[i].data.status === "success") a.image = response[i].data.message
-        //       if(!data.includes(a)) data.push(a)
-        //     }
-        //     resolve(data)
-        // })
+        // this.$store.dispatch('setPreloadAnimals', data)
+        // return resolve(data) 
+        for(let i = 0 ; i < number ; i++){
+           responses.push(makeGetRequest())
+        }
+        Promise.all(responses)
+          .then(response => {
+            for(let i = 0 ; i < number ; i++){
+              let a = this.fetchOne()
+              if (response[i].status === 200 && response[i].data.status === "success") a.image = response[i].data.message
+              if(!data.includes(a)) data.push(a)
+            }
+            resolve(data)
+        })
       })
     },
     fetchOne() {

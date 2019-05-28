@@ -10,29 +10,29 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <label>id:</label>{{data.item.id}}
+                                    <label>id: </label>{{data.item.id}}
                                 </td>
                                 <td>
-                                    <label>race:</label>{{data.item.race}}
+                                    <label>race: </label>{{data.item.race}}
                                 </td>
                                 <td>
-                                    <label>color:</label>{{data.item.color}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>scientific_name:</label>{{data.item.scientific_name}}
-                                </td>
-                                <td>
-                                    <label>gender:</label>{{data.item.gender}}
-                                </td>
-                                <td>
-                                    <label>behaviour:</label>{{data.item.behaviour}}
+                                    <label>color: </label>{{data.item.color}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label>size:</label>{{data.item.size}}
+                                    <label>scientific name: </label>{{data.item.scientific_name}}
+                                </td>
+                                <td>
+                                    <label>gender: </label>{{data.item.gender}}
+                                </td>
+                                <td>
+                                    <label>behaviour: </label>{{data.item.behaviour}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>size: </label>{{data.item.size}}
                                 </td>
                                 <td>
                                     <label>price:</label>{{data.item.price}}
@@ -114,6 +114,10 @@ h3{
     padding: 10px;
     margin: 10px;
     text-align: justify;
+    font-size: 0.9em;
+}
+#features label {
+    font-weight: bold;
 }
 
 </style>

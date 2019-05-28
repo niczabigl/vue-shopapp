@@ -1,13 +1,38 @@
 <template>
   <div id="shop">
-    <MainSideComponent @toggleSideBarEvent="toggleSideBar" @hideSideBarEvent="hideSideBar" :showMainSide="showMainSide" ></MainSideComponent>
-    <MainComponent @toggleToolTipModalEvent="toggleToolTipModal" @showToolTipModalEvent="setToolTipModal" @showNotificationEvent="setNotification" @showModalEvent="setModal" @hideSideBarEvent="hideSideBar"></MainComponent>
+    <MainSideComponent 
+      @toggleSideBarEvent="toggleSideBar" 
+      @hideSideBarEvent="hideSideBar" 
+      :showMainSide="showMainSide" >
+    </MainSideComponent>
+    <MainComponent 
+      @toggleToolTipModalEvent="toggleToolTipModal" 
+      @showToolTipModalEvent="setToolTipModal" 
+      @showNotificationEvent="setNotification" 
+      @showModalEvent="setModal" 
+      @hideSideBarEvent="hideSideBar">
+    </MainComponent>
     <div class="w3-display-topright">
       <ChartQuickComponent></ChartQuickComponent>
     </div>
-    <ToolTipModalComponent @toggleShowToolTipModal="toggleToolTipModal" :showToolTipModal="showToolTipModal" :data="toolTipData"></ToolTipModalComponent>
-    <ModalComponent @toggleShowModal="toggleModal" :showModal="showModal" :data="modalData"></ModalComponent>
-    <NotificationComponent @toggleShowNotification="toggleNotification" :showNotification="showNotification" :data="notificationData"></NotificationComponent>
+    <ToolTipModalComponent 
+      @toggleShowToolTipModal="toggleToolTipModal" 
+      :showToolTipModal="showToolTipModal" 
+      :data="toolTipData">
+    </ToolTipModalComponent>
+    <ModalComponent 
+      @toggleShowModal="toggleModal" 
+      :showModal="showModal" 
+      :data="modalData">
+    </ModalComponent>
+    <ul class="w3-ul" v-for="(n) in notificationsQueue" :key="n.id">
+      <li>
+        <NotificationComponent 
+          @toggleShowNotification="toggleNotification" 
+          :data="n">
+        </NotificationComponent>
+        </li>
+    </ul>
   </div>
 </template>
 
@@ -19,6 +44,7 @@ import ChartQuickComponent from '@/components/ChartQuickComponent.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
 import NotificationComponent from '@/components/NotificationComponent.vue'
 import ToolTipModalComponent from '@/components/ToolTipModalComponent.vue'
+import { setTimeout } from 'timers';
 // @ is an alias to /src
 export default {
   name: 'shop',
@@ -32,9 +58,9 @@ export default {
   },
   data: function () {
     return {
+      notificationsQueue: [],
       modalData: Object,
       toolTipData: Object,
-      notificationData: Object,
       showMainSide: false,
       showModal: false,
       showNotification: false,
@@ -58,6 +84,7 @@ export default {
       this.showToolTipModal = !this.showToolTipModal
     },
     setToolTipModal(data) {
+      data.main = this.cutLargeText(data.main, 500)
       this.toolTipData = data
       this.showToolTipModal = true
     },
@@ -66,8 +93,19 @@ export default {
       this.showModal = true
     },
     setNotification(data) {
-      this.notificationData = data
-      this.showNotification = true
+      this.$store.dispatch('generateId').then((response) => {
+        console.log('setNotification data ', data)
+        data.id = response
+        data.msg = this.cutLargeText(data.msg, 20)
+        this.notificationsQueue.push(data)
+        setTimeout(() => { 
+          this.notificationsQueue.shift()
+        }, 2900);
+      })
+    },
+    cutLargeText(text, length) {
+      let auxText = text.substring(0,length) + '...'
+      return auxText
     }
   }
 }
@@ -79,7 +117,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: black;
+  background-color: #2c3e50
 }
 #nav {
   padding: 30px;

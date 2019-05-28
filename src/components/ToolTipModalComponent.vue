@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <td class="w3-col s4">
-                        <label>scientific_name: </label>{{data.item.scientific_name}}
+                        <label>scientific name: </label>{{data.item.scientific_name}}
                     </td>
                     <td class="w3-col s4">
                         <label>gender: </label>{{data.item.gender}}
@@ -40,7 +40,7 @@
                 </tr>
             </tbody>
         </table>
-        <p class="main-data">{{data.main}}</p>
+        <div class="main-data">{{data.main}}</div>
         <hr>
         <div v-if="data.footer !== ''">{{data.footer}}</div>
       </div>  
@@ -74,9 +74,7 @@ export default {
   data: function () {
       return {
           show: false,
-          showClass: 'none',
-          setTop: 0,
-          setLeft: 0,
+          showClass: 'none'
       }
   },
   methods: {
@@ -97,9 +95,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .tooltipmodal {
-  max-height: 500px;
+  max-height: 350px;
   max-width: 350px;
-  position: absolute;
+  min-height: 350px;
+  min-width: 350px;
+  position: fixed;
   background-color:whitesmoke;
 }
 .tooltipmodal * {
@@ -112,6 +112,7 @@ export default {
 .main-data {
   text-align: justify;
   font-size: 10px;
+  text-overflow: ellipsis;
 }
 #features label {
   font-weight: bold;

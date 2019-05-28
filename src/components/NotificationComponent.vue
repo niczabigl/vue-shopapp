@@ -1,6 +1,6 @@
 <template>
-    <div v-if="show" id="snackbar" v-bind:class="{show: show}" class="notification">
-        <div v-bind:class="{'w3-blue': type.isInfo, 'w3-red': type.isFail, 'w3-yellow': type.isWarning, 'w3-green': type.isSuccess}" class="w3-card w3-panel">
+    <div id="snackbar" class="show notification">
+        <div v-bind:class="{'w3-blue': data.style === 'info', 'w3-red': data.style === 'fail', 'w3-yellow': data.style === 'warning', 'w3-green': data.style === 'success'}" class="w3-card w3-panel">
             <h3>{{data.title}}</h3>
             <p>{{data.msg}}</p>
         </div>
@@ -11,67 +11,20 @@
 export default {
     name: 'NotificationComponent',
     props: {
-        showNotification: Boolean,
         data: {
+            id: '',
             style: '',
             title: '',
             msg: ''
         }
     },
+    created: function () {
+    },
     data: function () {
         return {
-            fadeOut: 3000,
-            showSnackBar: false,
-            type: {
-                isInfo: false,
-                isFail: false,
-                isWarning: false,
-                isSuccess: false,
-            },
-            show: false
-        }
-    },
-    watch: {
-        show: function () {
-            this.selectClass()
-            if (!this.show) return
-            setTimeout(() => { 
-                this.$emit('toggleShowNotification')
-            }, 2900);
-        },
-        showNotification: function (newValue) {
-            this.show = newValue
         }
     },
     methods: {
-        checkDisplay: function () {
-            return this.show ? true : false
-        },
-        selectClass: function () {
-            this.clearTypes()
-            switch (this.data.style) {
-                case 'info':
-                    this.type.isInfo = true
-                    break
-                case 'warning':
-                    this.type.isWarning = true
-                    break
-                case 'fail':
-                    this.type.isFail = true
-                    break
-                case 'success':
-                    this.type.isSuccess = true
-                    break
-                default:
-                    this.type.isInfo = true
-            }
-        },
-        clearTypes: function () {
-            this.type.isInfo = false
-            this.type.isWarning = false
-            this.type.isSuccess = false
-            this.type.isFail = false
-        }
     }
 }
 </script>

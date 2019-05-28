@@ -50,4 +50,9 @@ li {
 a {
   color: #42b983;
 }
+.main {
+  background-image: url('../assets/wood-background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 </style>
